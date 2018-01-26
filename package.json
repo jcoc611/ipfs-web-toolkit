@@ -1,0 +1,30 @@
+{
+  "name": "ipfs-web-toolkit",
+  "version": "1.0.0",
+  "description": "An IPFS toolkit that runs on the browser",
+  "main": "src/index.js",
+  "scripts": {
+    "bundle": "browserify src/index.js -o public/scripts/bundle.js -t [ babelify --presets [ react ] ]",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcoc611/ipfs-web-toolkit.git"
+  },
+  "keywords": [
+    "IPFS",
+    "toolkit",
+    "web"
+  ],
+  "author": "jcoc611",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcoc611/ipfs-web-toolkit/issues"
+  },
+  "homepage": "https://github.com/jcoc611/ipfs-web-toolkit#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0"
+  }
+}
