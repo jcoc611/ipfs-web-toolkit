@@ -1,0 +1,66 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f5f3f3;
+  font-family: 'Source Sans Pro', sans;
+}
+#react-app{
+  padding-right: 400px;
+}
+#sidebar {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0px 25px 20px 25px;
+  width: 200px;
+}
+#sidebar .item .value {
+  font-size: 11px;
+  font-weight: 300;
+  background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1px 6px;
+}
+#sidebar .item span {
+  display: inline-block;
+}
+#sidebar .item .title {
+  width: 90px;
+}
+#sidebar .item .value.v-good {
+  background: #82ce53;
+  border: 1px solid #baf695;
+  color: #FFF;
+}
+#toolbox {
+  display: inline-block;
+  background: #FFF;
+  margin: 10px 20px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 30px;
+}
+.text-content {
+  width: 100%;
+  font-size: 12px;
+  color: #242424;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: #ebedf3;
+  padding: 4px 8px;
+  border: 1px solid #8695ab;
+  word-wrap: break-word;
+  max-height: 250px;
+}
+.option-group textarea{
+  width:100%;
+  max-height: 250px;
+  height: auto;
+  box-sizing: border-box;
+}
