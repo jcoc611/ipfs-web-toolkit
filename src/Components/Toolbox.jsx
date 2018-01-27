@@ -3,6 +3,7 @@
 const React = require('react')
 
 const Setup = require('./Setup')
+const Network = require('./Network')
 
 class Toolbox extends React.Component {
   render(){
@@ -32,7 +33,10 @@ class Toolbox extends React.Component {
 
         <section>
           <h2>Network</h2>
-          <p className="TODO">TODO</p>
+          <Network.LibP2P
+            onRequest={this.props.onRequest}
+            ipfsData={this.props.ipfsData}
+            stats={this.props.stats} />
         </section>
       </div>
     )

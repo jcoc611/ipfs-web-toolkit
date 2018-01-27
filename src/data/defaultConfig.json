@@ -3,14 +3,14 @@
   "dht": true,
   "Addresses": {
     "Swarm": [
-
+      "/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star"
     ],
     "API": "",
     "Gateway": ""
   },
   "Discovery": {
     "MDNS": {
-      "Enabled": false,
+      "Enabled": true,
       "Interval": 10
     },
     "webRTCStar": {
@@ -26,5 +26,16 @@
     "/dns4/nyc-2.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmSoLV4Bbm51jM9C4gDYZQ9Cy3U6aXMJDAbzgu2fzaDs64",
     "/dns4/wss0.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic",
     "/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6"
-  ]
+  ],
+  "EXPERIMENTAL": {
+    "pubsub": true,
+    "dht": true,
+    "relay": {
+      "enabled": true,
+      "hop": {
+        "enabled": true,
+        "active": false
+      }
+    }
+  }
 }
