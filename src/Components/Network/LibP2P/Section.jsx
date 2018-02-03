@@ -2,6 +2,7 @@
 // Basic node information and utils
 const React = require('react')
 const Peers = require('./Peers.jsx')
+const PeerFind = require('./PeerFind.jsx')
 const PeerDial = require('./PeerDial.jsx')
 const PeerChat = require('./PeerChat.jsx')
 
@@ -12,6 +13,10 @@ class LibP2P extends React.Component {
         <h3>LibP2P</h3>
 
         <Peers stats={this.props.stats} />
+        <PeerFind stats={this.props.stats}
+          ipfsData={this.props.ipfsData}
+          onRequest={this.props.onRequest} />
+
         <PeerDial stats={this.props.stats}
           ipfsData={this.props.ipfsData}
           onRequest={this.props.onRequest} />

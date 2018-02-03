@@ -33,6 +33,14 @@ class Toolbox extends React.Component {
 
         <section>
           <h2>Network</h2>
+          <Network.Swarm
+            onRequest={this.props.onRequest}
+            ipfsData={this.props.ipfsData}
+            stats={this.props.stats} />
+          <Network.PubSub
+            onRequest={this.props.onRequest}
+            ipfsData={this.props.ipfsData}
+            stats={this.props.stats} />
           <Network.LibP2P
             onRequest={this.props.onRequest}
             ipfsData={this.props.ipfsData}

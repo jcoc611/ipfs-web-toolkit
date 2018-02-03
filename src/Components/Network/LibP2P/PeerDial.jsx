@@ -50,7 +50,7 @@ class PeerDial extends React.Component {
         <h4>Dial a Peer</h4>
         <div className="option-group">
           <div className="label">Call a libp2p peer on any given protocol</div>
-          <input placeholder="protocol (i.e. /echo/1.0.0)" 
+          <input placeholder="protocol (e.g. /echo/1.0.0)" 
             style={{width: "18%"}}
             value={this.state.protocol}
             onChange={this.onProtocolChange} />
