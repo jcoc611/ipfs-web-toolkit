@@ -1,12 +1,15 @@
 {
   "start": true,
-  "Addresses": {
-    "Swarm": [
-      "/dns4/wrtc-star.discovery.libp2p.io/tcp/433/wss/p2p-webrtc-star"
-    ],
-    "API": "",
-    "Gateway": ""
+  "config": {
+    "Addresses": {
+      "Swarm": [
+        "/dns4/wrtc-star.discovery.libp2p.io/tcp/433/wss/p2p-webrtc-star"
+      ],
+      "API": "",
+      "Gateway": ""
+    }
   },
+  
   "Discovery": {
     "MDNS": {
       "Enabled": true,

@@ -20,7 +20,7 @@ class Connect extends React.Component {
     this.props.onRequest('disconnect')
   }
 
-  updateConfig(e) {
+  updateConfig = (e) => {
     this.setState({
       config: e.target.value
     })

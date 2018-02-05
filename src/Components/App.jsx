@@ -186,7 +186,11 @@ class App extends React.Component {
   }
 
   addSwarmPeer(addr) {
-    this.ipfs.swarm.connect(multiaddr(addr), (err) => {
+    let maddr = multiaddr(addr)
+    let pinfo = new PeerInfo()
+    pinfo.multiaddrs.add(maddr)
+    
+    this.ipfs.swarm.connect(pinfo, (err) => {
       if (err) return console.error(err)
       // if no err is present, connection is now open
       this.getSwarmPeers()
