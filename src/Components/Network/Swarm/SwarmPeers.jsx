@@ -29,8 +29,8 @@ class SwarmPeers extends React.Component {
     let items = []
     for(let peer of this.props.stats.swarmPeers){
       items.push(
-        <div className="peer" key={peer}>
-          {peer}
+        <div className="peer" key={peer.addr}>
+          {peer.addr} ({peer.peer})
         </div>
       )
     }

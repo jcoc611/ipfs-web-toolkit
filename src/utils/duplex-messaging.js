@@ -8,33 +8,37 @@ class DuplexMessaging {
     this.listeners = []
   }
 
-  source(end, cb) {
+  source = (end, cb) => {
     if(end) return cb(end)
 
-    if(queue.length)
+    if(this.queue.length)
       cb(null, this.queue.pop())
     else
       this._cb = cb
   }
 
-  sink(read, cb) {
-    read(null, function next(end, serialized) {
+  sink = (read, cb) => {
+    let next = (end, buff) => {
       if(end === true) return
       if(end) throw end
 
       // =
-      this.onMessage(serialized)
+      this.onMessage(buff.toString())
       // =
 
       read(null, next)
-    })
+    }
+    
+    read(null, next)
   }
 
   send(msg) {
-    if(this._cb)
+    if (this._cb) {
       this._cb(null, msg)
-    else 
-      this.queue.push(response)
+      this._cb = null
+    } else { 
+      this.queue.push(msg)
+    }
   }
 
   receive(cb) {
@@ -42,7 +46,7 @@ class DuplexMessaging {
   }
 
   onMessage(msg) {
-    for(let listener of this.listeners) {
+    for (let listener of this.listeners) {
       listener(msg)
     }
   }

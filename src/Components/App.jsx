@@ -108,6 +108,8 @@ class App extends React.Component {
     this.ipfs.on('ready', () => {
       this.setStatus('online')
 
+      let p2pNode = this.ipfs._libp2pNode
+
       // Update Config
       this.ipfs.config.get((err, c) => {
         if (err) return console.error(err)
@@ -119,7 +121,7 @@ class App extends React.Component {
       this.getSwarmPeers()
 
       // Update Peers
-      this.ipfs._libp2pNode.on('peer:connect', (pInfo) => {
+      p2pNode.on('peer:connect', (pInfo) => {
         this.updateState('stats/peersConnected', (s) => {
           let peersConnected = new Set(s)
           peersConnected.add(pInfo.id.toB58String())
@@ -128,7 +130,7 @@ class App extends React.Component {
         })
       })
 
-      this.ipfs._libp2pNode.on('peer:disconnect', (pInfo) => {
+      p2pNode.on('peer:disconnect', (pInfo) => {
         this.updateState('stats/peersConnected', (s) => {
           let peersConnected = new Set(s)
           peersConnected.delete(pInfo.id.toB58String())
@@ -137,7 +139,7 @@ class App extends React.Component {
         })
       })
 
-      this.ipfs._libp2pNode.on('peer:discovery', (pInfo) => {
+      p2pNode.on('peer:discovery', (pInfo) => {
         this.updateState('stats/peersDiscovered', (s) => {
           let peersDiscovered = new Set(s)
           peersDiscovered.add(pInfo.id.toB58String())
@@ -147,7 +149,8 @@ class App extends React.Component {
       })
 
       // Handle basic echo
-      this.ipfs._libp2pNode.handle('/echo/1.0.0', (conn) => pull(conn, conn))
+      p2pNode.handle('/echo/1.0.0', 
+        (protocol, conn) => pull(conn, conn))
     })
 
     // Node has hit some error while initing/starting
@@ -189,7 +192,7 @@ class App extends React.Component {
     let maddr = multiaddr(addr)
     let pinfo = new PeerInfo()
     pinfo.multiaddrs.add(maddr)
-    
+
     this.ipfs.swarm.connect(pinfo, (err) => {
       if (err) return console.error(err)
       // if no err is present, connection is now open
@@ -261,11 +264,7 @@ class App extends React.Component {
 
       this.dialMessaging = new Messaging()
 
-      pull(
-        this.dialMessaging.source,
-        conn,
-        this.dialMessaging.sink
-      )
+      pull(this.dialMessaging, conn, this.dialMessaging)
 
       this.dialMessaging.receive((msg) => {
         this.updateState('ipfsData/libp2p/messages', (msgs) => msgs.concat({
@@ -277,7 +276,8 @@ class App extends React.Component {
 
     this.updateState('ipfsData/libp2p', {
       dialStatus: 'calling',
-      peer: peerId.toJSON()
+      protocol: options.protocol,
+      peer: peerId.toJSON(),
     })
   }
 
