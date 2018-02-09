@@ -9,18 +9,33 @@ const merge = require('lodash/merge')
 const multiaddr = require('multiaddr')
 
 const Messaging = require('../utils/duplex-messaging')
-const Toolbox = require('./Toolbox.jsx')
+
+const Setup = require('./Setup')
+const Network = require('./Network')
+
+// const Toolbox = require('./Toolbox.jsx')
 const Sidebar = require('./Sidebar.jsx')
+const Menu = require('./Menu.jsx')
 
 class App extends React.Component {
 
   constructor(props, context) {
     super(props, context)
     this.state = this.initialState()
+    this.sections = {
+      setup: Setup,
+      network: Network,
+    }
   }
 
   initialState() {
     return {
+      menu: {
+        selected: 'setup',
+        offline: ['setup'],
+        //online: ['files', 'graph', 'network']
+        online: ['setup', 'network'],
+      },
       stats: {
         status: 'offline',
         peersDiscovered: new Set(),
@@ -42,55 +57,38 @@ class App extends React.Component {
 
   onRequest = (req, arg) => {
     // TODO: need to extend to more args?
-    switch(req) {
-      case 'connect':
-        this.startIPFS(arg)
-        break
-      case 'disconnect':
-        this.stopIPFS()
-        break
+
+    // Switch statements living in 2020s
+    let table = {
+      // General
+      'menu:select': (arg) => this.updateState('menu/selected', arg),
+      
+      /// IPFS
+      'connect':              this.startIPFS,
+      'disconnect':           this.stopIPFS,
 
       // Swarm
-      case 'swarm:sync':
-        this.getSwarmPeers()
-        break
-      case 'swarm:add':
-        this.addSwarmPeer(arg)
-        break
+      'swarm:add':            this.addSwarmPeer,
+      'swarm:sync':           this.getSwarmPeers,
 
       // PubSub
-      case 'pubsub:subscribe':
-        this.subscribe(arg)
-        break
-      case 'pubsub:unsubscribe':
-        this.unsubscribe(arg)
-        break
-      case 'pubsub:publish':
-        this.publish(arg)
-        break
+      'pubsub:publish':       this.publish,
+      'pubsub:subscribe':     this.subscribe,
+      'pubsub:unsubscribe':   this.unsubscribe,
 
       // LibP2P
-      case 'libp2p:dial':
-        this.dialPeer(arg)
-        break
-      case 'libp2p:hangUp':
-        this.hangUp()
-        break
-      case 'libp2p:send':
-        this.sendToPeer(arg)
-        break
-      case 'libp2p:findPeer':
-        this.findPeer(arg)
-        break
-      case 'libp2p:findProvider':
-        this.findProvider(arg)
-        break
-      case 'libp2p:provide':
-        this.provide(arg)
-        break
-      default:
-        console.error(`${req}? No clue how to do that.`)
+      'libp2p:dial':          this.dialPeer,
+      'libp2p:send':          this.sendToPeer,
+      'libp2p:hangUp':        this.hangUp,
+      'libp2p:provide':       this.provide,
+      'libp2p:findPeer':      this.findPeer,
+      'libp2p:findProvider':  this.findProvider,
     }
+
+    if (!table[req])
+      return console.error(`${req}? No clue how to do that.`)
+
+    table[req].call(this, arg)
   }
 
   startIPFS(config) {    
@@ -375,19 +373,27 @@ class App extends React.Component {
 
   ////////////////////////////////////
   // Rendering
-
   render(){
+    let App_section = this.sections[this.state.menu.selected]
+
     return (
       <div id="react-app">
-        <Toolbox
-          onRequest={this.onRequest}
-          ipfsData={this.state.ipfsData}
+        <Menu 
+          menu={this.state.menu}
           stats={this.state.stats}
-         />
+          onRequest={this.onRequest} />
+        <div id="toolbox-wrap">
+          <div id="toolbox">
+            <App_section 
+              onRequest={this.onRequest}
+              ipfsData={this.state.ipfsData}
+              stats={this.state.stats} />
+          </div>
+        </div>
         <Sidebar stats={this.state.stats} />
       </div>
     )
-  }  
+  }
 }
 
 module.exports = App
